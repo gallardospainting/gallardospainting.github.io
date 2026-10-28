@@ -517,10 +517,6 @@
               <div><h3 data-i18n="doorswindows">Pintura de puertas y ventanas</h3><p data-i18n="doorswindowsDesc">Solo puertas y ventanas, sin pintar cuartos completos.</p></div>
             </article>
             <article class="service">
-              <span class="chip hue-sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 16V4"/><rect x="3" y="16" width="18" height="5"/><path d="M8.5 16v5M13.5 16v5M18.5 16v5"/></svg></span>
-              <div><h3 data-i18n="baseboards">Reemplazo de baseboards</h3><p data-i18n="baseboardsDesc">Zócalos nuevos instalados, cobrados por pie lineal.</p></div>
-            </article>
-            <article class="service">
               <span class="chip hue-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 12-8.37 8.37a2.12 2.12 0 1 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.44c-.6-.7-.96-1.61-1.11-2.53l-.32-1.98a2.05 2.05 0 0 0-1.13-1.53l-2.44-1.1A2.07 2.07 0 0 0 12.83 2.6l-.45 2.9a2.03 2.03 0 0 0 .62 1.94l.7.66a2.05 2.05 0 0 1 2.83 0l2.04 2.04a2.06 2.06 0 0 1 0 2.83Z"/></svg></span>
               <div><h3 data-i18n="carpentry">Carpintería</h3><p data-i18n="carpentryDesc">Reparaciones de madera: marcos, decks, gabinetes, escaleras y molduras, con precio fijo por trabajo.</p></div>
             </article>
@@ -577,7 +573,6 @@
                   <option data-kind="tuckpointing" data-value-es="Tuckpointing (reparación de juntas de mortero)" data-value-en="Tuckpointing (mortar joint repair)">Tuckpointing (reparación de juntas de mortero)</option>
                   <option data-kind="carpentry" data-value-es="Carpintería" data-value-en="Carpentry">Carpintería</option>
                   <option data-kind="doorswindows" data-value-es="Pintura de puertas y ventanas" data-value-en="Door and window painting">Pintura de puertas y ventanas</option>
-                  <option data-kind="baseboards" data-value-es="Reemplazo de baseboards (zócalos)" data-value-en="Baseboard replacement">Reemplazo de baseboards (zócalos)</option>
                   <option data-kind="other" data-value-es="Otro tipo de trabajo" data-value-en="Other type of work">Otro tipo de trabajo</option>
                 </select>
               </div>
@@ -839,7 +834,7 @@
       tuckpointing: "Tuckpointing", tuckpointingDesc: "Reparación de juntas de mortero en ladrillo.",
       scopeLinear: "Pies lineales aproximados", linearUnit: "pies lineales",
       doorswindows: "Pintura de puertas y ventanas", doorswindowsDesc: "Solo puertas y ventanas, sin pintar cuartos completos.",
-      baseboards: "Reemplazo de baseboards", baseboardsDesc: "Zócalos nuevos instalados, cobrados por pie lineal.",
+      
       dwTitle: "¿Cuántas puertas y ventanas?", doorTypeLabel: "Tipo de puerta", windowTypeLabel: "Tipo de ventana", doorCountLabel: "Cantidad de puertas", windowCountLabel: "Cantidad de ventanas",
       dwHelp: "Precios por pieza según el tipo. Puertas: lisa $75–$150 · de paneles $125–$175 · francesa (con vidrio) $200–$400. Ventanas: normal $100–$175 · doble (double-hung) $150–$250.",
       estimateDwPrompt: "Elige el tipo y la cantidad de puertas y ventanas", perDoor: "por puerta", perWindow: "por ventana",
@@ -890,7 +885,7 @@
       tuckpointing: "Tuckpointing", tuckpointingDesc: "Mortar joint repair for brick.",
       scopeLinear: "Approximate linear feet", linearUnit: "linear ft",
       doorswindows: "Door and window painting", doorswindowsDesc: "Doors and windows only — no full rooms.",
-      baseboards: "Baseboard replacement", baseboardsDesc: "New baseboards installed, priced per linear foot.",
+      
       dwTitle: "How many doors and windows?", doorTypeLabel: "Door type", windowTypeLabel: "Window type", doorCountLabel: "Number of doors", windowCountLabel: "Number of windows",
       dwHelp: "Per-piece prices by type. Doors: flat $75–$150 · paneled $125–$175 · French (with glass) $200–$400. Windows: standard $100–$175 · double-hung (with sash) $150–$250.",
       estimateDwPrompt: "Choose the type and number of doors and windows", perDoor: "per door", perWindow: "per window",
@@ -1005,7 +1000,7 @@
     carpentryOtherText.required = !!cNeedsText;
     otherFields.hidden = !isOther;
     otherWork.required = isOther;
-    scopeLabel.textContent = isBoth ? copy[lang].scopeInterior : ((kind === "tuckpointing" || kind === "baseboards") ? copy[lang].scopeLinear : copy[lang].scope);
+    scopeLabel.textContent = isBoth ? copy[lang].scopeInterior : ((kind === "tuckpointing" ) ? copy[lang].scopeLinear : copy[lang].scope);
     currentEstimate = null;
     estimateRate.textContent = "";
     if (kind === "none" || isOther) {
@@ -1174,8 +1169,6 @@
       currentEstimate = { min: feet * 1.25, max: feet * 1.75, rate: "$1.25–$1.75 / " + copy[lang].scopeUnit };
     } else if (kind === "tuckpointing") {
       currentEstimate = { min: feet * 8, max: feet * 15, rate: "$8–$15 / " + copy[lang].linearUnit };
-    } else if (kind === "baseboards") {
-      currentEstimate = { min: feet * 4, max: feet * 8, rate: "$4–$8 / " + copy[lang].linearUnit };
     } else if (isBoth) {
       currentEstimate = {
         min: (feet * 4) + (exteriorFeet * 1.25),
@@ -1371,7 +1364,7 @@
       ];
     } else {
       scopeLines = [
-        "*" + c.msgScope + ":* " + data.get("scope") + " " + ((selectedKind === "tuckpointing" || selectedKind === "baseboards") ? c.linearUnit : c.scopeUnit)
+        "*" + c.msgScope + ":* " + data.get("scope") + " " + ((selectedKind === "tuckpointing" ) ? c.linearUnit : c.scopeUnit)
       ];
     }
     var messageLines = [
